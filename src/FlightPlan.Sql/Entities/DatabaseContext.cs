@@ -2,26 +2,26 @@
 
 namespace FlightPlan.Sql.Entities
 {
-    public class DatabaseContext:DbContext
+    public class DatabaseContext : DbContext
     {
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
         }
 
         public DbSet<Airport> Airports { get; set; }
-        public DbSet<Flight> Flights { get; set; }
         public DbSet<Plane> Planes { get; set; }
+        public DbSet<Flight> Flights { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Airport>().ToTable("Airport");
-            modelBuilder.Entity<Airport>().HasMany(a => a.DepartureFlights).WithOne(f => f.DepartureAirport).OnDelete(DeleteBehavior.SetNull);
-            modelBuilder.Entity<Airport>().HasMany(a => a.ArrivalFlights).WithOne(f => f.ArrivalAirport).OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Airport>().ToTable("Airports");
 
-            modelBuilder.Entity<Plane>().ToTable("Plane");
-            modelBuilder.Entity<Plane>().HasMany(p => p.Flights).WithOne(f => f.Plane).OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Plane>().ToTable("Planes");
 
-            modelBuilder.Entity<Flight>().ToTable("Flight");
+            modelBuilder.Entity<Flight>().ToTable("Flights");
+            modelBuilder.Entity<Flight>().HasOne(x => x.DepartureAirport).WithMany().OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Flight>().HasOne(x => x.ArrivalAirport).WithMany().OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Flight>().HasOne(x => x.Plane).WithMany().OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

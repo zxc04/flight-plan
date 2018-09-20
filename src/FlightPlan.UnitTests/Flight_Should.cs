@@ -1,4 +1,5 @@
 using FlightPlan.Application.Domain;
+using System;
 using Xunit;
 
 namespace FlightPlan.UnitTests
@@ -8,21 +9,10 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeDistance_WhenAirportsPresent()
         {
-            Airport departure = new Airport()
-            {
-                Name = "Departure",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.53)
-            };
-            Airport arrival = new Airport()
-            {
-                Name = "Arrival",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.55)
-            };
-            Flight flight = new Flight()
-            {
-                DepartureAirport = departure,
-                ArrivalAirport = arrival
-            };
+            Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Flight flight = new Flight(Guid.NewGuid(), departure, arrival, null);
+
             int expected = 1;
 
             int actual = flight.GetDistanceInKm();
@@ -33,15 +23,9 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeZeroDistance_WhenArrivalIsMissing()
         {
-            Airport departure = new Airport()
-            {
-                Name = "Departure",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.53)
-            };
-            Flight flight = new Flight()
-            {
-                DepartureAirport = departure
-            };
+            Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
+            Flight flight = new Flight(Guid.NewGuid(), departure, null, null);
+
             int expected = 0;
 
             int actual = flight.GetDistanceInKm();
@@ -52,15 +36,9 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeZeroDistance_WhenDepartureIsMissing()
         {
-            Airport arrival = new Airport()
-            {
-                Name = "Arrival",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.55)
-            };
-            Flight flight = new Flight()
-            {
-                ArrivalAirport = arrival
-            };
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Flight flight = new Flight(Guid.NewGuid(), null, arrival, null);
+
             int expected = 0;
 
             int actual = flight.GetDistanceInKm();
@@ -71,28 +49,11 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeTotalFuelConsumption_WhenPlaneIsPresent()
         {
-            Airport departure = new Airport()
-            {
-                Name = "Departure",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.53)
-            };
-            Airport arrival = new Airport()
-            {
-                Name = "Arrival",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.55)
-            };
-            Plane plane = new Plane()
-            {
-                Model = "Model",
-                TakeoffFuelConsumption = 10,
-                FuelConsumptionPer100Km = 200
-            };
-            Flight flight = new Flight()
-            {
-                DepartureAirport = departure,
-                ArrivalAirport = arrival,
-                Plane = plane
-            };
+            Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Plane plane = new Plane(Guid.NewGuid(), "Model", 10, 200);
+            Flight flight = new Flight(Guid.NewGuid(), departure, arrival, plane);
+
             double expected = 12;
 
             double actual = flight.GetTotalFuelConsumption();
@@ -103,21 +64,10 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeZeroFuelConsumption_WhenPlaneIsMissing()
         {
-            Airport departure = new Airport()
-            {
-                Name = "Departure",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.53)
-            };
-            Airport arrival = new Airport()
-            {
-                Name = "Arrival",
-                Coordinates = new GeoCoordinatePortable.GeoCoordinate(49, 2.55)
-            };
-            Flight flight = new Flight()
-            {
-                DepartureAirport = departure,
-                ArrivalAirport = arrival
-            };
+            Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Flight flight = new Flight(Guid.NewGuid(), departure, arrival, null);
+
             double expected = 0;
 
             double actual = flight.GetTotalFuelConsumption();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace FlightPlan.Sql.Entities
 {
@@ -10,7 +9,5 @@ namespace FlightPlan.Sql.Entities
         public string Model { get; set; }
         public double FuelConsumptionPer100Km { get; set; }
         public double TakeoffFuelConsumption { get; set; }
-
-        public ICollection<Flight> Flights { get; set; }
     }
 }

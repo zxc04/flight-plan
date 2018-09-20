@@ -1,61 +1,114 @@
 ﻿using FlightPlan.Application.Repositories;
 using FlightPlan.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Plane = FlightPlan.Application.Domain.Plane;
 
 namespace FlightPlan.Sql.Repositories
 {
     public class PlaneRepository : IPlaneRepository
     {
-        private readonly DatabaseContext context;
+        private readonly DatabaseContext _context;
 
         public PlaneRepository(DatabaseContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
-        public void AddOrUpdate(Plane plane)
+        public async Task<List<Plane>> GetAll()
+        {
+            return await _context
+                .Planes
+                .Select(x => FromEntity(x))
+                .ToListAsync();
+        }
+
+        public async Task<Plane> Get(Guid? id)
+        {
+            var entity = await _context.Planes.FirstOrDefaultAsync(m => m.Id == id);
+
+            return FromEntity(entity);
+        }
+
+        public async Task<Plane> CreateOrUpdate(Plane plane)
         {
             if (plane.Id == null || plane.Id == Guid.Empty)
-                Add(plane);
+                return await Create(plane);
             else
-                Update(plane);
+                return await Update(plane);
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid? id)
         {
-            Entities.Plane entity = context.Planes.Find(id);
+            Entities.Plane entity = await _context.Planes.FindAsync(id);
             if (entity != null)
             {
-                context.Planes.Remove(entity);
-                context.SaveChanges();
+                _context.Planes.Remove(entity);
+                await _context.SaveChangesAsync();
             }
         }
 
-        private void Add(Plane plane)
+        private async Task<Plane> Create(Plane plane)
         {
-            Entities.Plane entity = new Entities.Plane()
+            Entities.Plane entity = ToEntity(plane);
+            entity.Id = Guid.NewGuid();
+
+            _context.Add(entity);
+            await _context.SaveChangesAsync();
+
+            plane = FromEntity(entity);
+
+            return plane;
+        }
+
+        private async Task<Plane> Update(Plane plane)
+        {
+            Entities.Plane entity = ToEntity(plane);
+
+            _context.Attach(entity).State = EntityState.Modified;
+
+            try
             {
-                Id = Guid.NewGuid(),
+                await _context.SaveChangesAsync();
+
+                return plane;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Planes.Any(e => e.Id == plane.Id))
+                {
+                    return null;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private Plane FromEntity(Entities.Plane entity)
+        {
+            if (entity == null)
+                return null;
+
+            return new Plane(entity.Id, entity.Model, entity.FuelConsumptionPer100Km, entity.TakeoffFuelConsumption);
+        }
+
+        private Entities.Plane ToEntity(Plane plane)
+        {
+            if (plane == null)
+                return null;
+
+            return new Entities.Plane()
+            {
+                Id = plane.Id,
                 Model = plane.Model,
                 FuelConsumptionPer100Km = plane.FuelConsumptionPer100Km,
                 TakeoffFuelConsumption = plane.TakeoffFuelConsumption
             };
-
-            context.Add(entity);
-            context.SaveChanges();
-        }
-
-        private void Update(Plane plane)
-        {
-            Entities.Plane entity = context.Planes.Find(plane.Id);
-
-            entity.Model = plane.Model;
-            entity.FuelConsumptionPer100Km = plane.FuelConsumptionPer100Km;
-            entity.TakeoffFuelConsumption = plane.TakeoffFuelConsumption;
-
-            context.Update(entity);
-            context.SaveChanges();
         }
     }
 }

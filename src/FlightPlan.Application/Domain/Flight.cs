@@ -2,15 +2,19 @@
 
 namespace FlightPlan.Application.Domain
 {
-    public class Flight : IEntity
+    public class Flight
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public Airport DepartureAirport { get; set; }
         public Airport ArrivalAirport { get; set; }
 
         public Plane Plane { get; set; }
-    
+
+        public Flight()
+        {
+        }
+
         public Flight(Guid id, Airport departureAirport, Airport arrivalAirport, Plane plane)
         {
             Id = id;

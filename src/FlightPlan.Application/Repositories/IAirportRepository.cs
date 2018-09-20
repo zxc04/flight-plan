@@ -1,11 +1,15 @@
 ﻿using FlightPlan.Application.Domain;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FlightPlan.Application.Repositories
 {
     public interface IAirportRepository
     {
-        void AddOrUpdate(Airport airport);
-        void Delete(Guid id);
+        Task<List<Airport>> GetAll();
+        Task<Airport> Get(Guid? id);
+        Task<Airport> CreateOrUpdate(Airport airport);
+        Task Delete(Guid? id);
     }
 }

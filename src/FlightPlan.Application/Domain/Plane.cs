@@ -2,13 +2,17 @@
 
 namespace FlightPlan.Application.Domain
 {
-    public class Plane : IEntity
+    public class Plane
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string Model { get; set; }
         public double FuelConsumptionPer100Km { get; set; }
         public double TakeoffFuelConsumption { get; set; }
+
+        public Plane()
+        {
+        }
 
         public Plane(Guid id, string model, double fuelConsumptionPer100Km, double takeoffFuelConsumption)
         {
