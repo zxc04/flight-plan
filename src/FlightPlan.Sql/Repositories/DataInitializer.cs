@@ -1,14 +1,24 @@
-﻿using System.Linq;
+﻿using FlightPlan.Application.Repositories;
+using FlightPlan.Sql.Entities;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace FlightPlan.Sql.Entities
+namespace FlightPlan.Sql.Repositories
 {
-    public class DatabaseInitializer
+    public class DataInitializer : IDataInitializer
     {
-        public static void Initialize(DatabaseContext context)
-        {
-            context.Database.EnsureCreated();
+        private readonly DatabaseContext _context;
 
-            if (!context.Airports.Any())
+        public DataInitializer(DatabaseContext context)
+        {
+            _context = context;
+        }
+
+        public async Task Initialize()
+        {
+            _context.Database.EnsureCreated();
+
+            if (!_context.Airports.Any())
             {
                 var airports = new Airport[]
                 {
@@ -20,13 +30,11 @@ namespace FlightPlan.Sql.Entities
 
                 foreach (var airport in airports)
                 {
-                    context.Airports.Add(airport);
+                    _context.Airports.Add(airport);
                 }
-
-                context.SaveChanges();
             }
 
-            if (!context.Planes.Any())
+            if (!_context.Planes.Any())
             {
                 var planes = new Plane[]
                 {
@@ -38,12 +46,11 @@ namespace FlightPlan.Sql.Entities
 
                 foreach (var plane in planes)
                 {
-                    context.Planes.Add(plane);
+                    _context.Planes.Add(plane);
                 }
-
-                context.SaveChanges();
             }
 
+            await _context.SaveChangesAsync();
         }
     }
 }

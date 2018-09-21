@@ -1,4 +1,4 @@
-﻿using FlightPlan.Sql.Entities;
+﻿using FlightPlan.Application.Repositories;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +19,8 @@ namespace FlightPlan.WebSite
 
                 try
                 {
-                    var context = services.GetRequiredService<DatabaseContext>();
-                    DatabaseInitializer.Initialize(context);
+                    var dataInitializer = services.GetRequiredService<IDataInitializer>();
+                    dataInitializer.Initialize();
                 }
                 catch (Exception ex)
                 {

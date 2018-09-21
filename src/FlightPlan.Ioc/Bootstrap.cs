@@ -16,6 +16,7 @@ namespace FlightPlan.Ioc
             services.AddTransient<IAirportRepository, AirportRepository>();
             services.AddTransient<IFlightRepository, FlightRepository>();
             services.AddTransient<IPlaneRepository, PlaneRepository>();
+            services.AddTransient<IDataInitializer, DataInitializer>();
         }
     }
 }
