@@ -16,6 +16,6 @@ namespace FlightPlan.Sql.Entities
         public Plane Plane { get; set; }
 
         public int Distance { get; set; }
-        public double TotalFuelConsumption { get; set; }
+        public int TotalFuelConsumption { get; set; }
     }
 }

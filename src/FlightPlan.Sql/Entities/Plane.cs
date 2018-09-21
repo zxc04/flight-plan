@@ -7,7 +7,7 @@ namespace FlightPlan.Sql.Entities
         public Guid Id { get; set; }
 
         public string Model { get; set; }
-        public double FuelConsumptionPer100Km { get; set; }
-        public double TakeoffFuelConsumption { get; set; }
+        public int FuelConsumptionPer100Km { get; set; }
+        public int TakeoffFuelConsumption { get; set; }
     }
 }

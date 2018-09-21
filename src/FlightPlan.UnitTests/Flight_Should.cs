@@ -10,10 +10,10 @@ namespace FlightPlan.UnitTests
         public void ComputeDistance_WhenAirportsPresent()
         {
             Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
-            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49.9, 2.53);
             Flight flight = new Flight(Guid.NewGuid(), departure, arrival, null);
 
-            int expected = 1;
+            int expected = 100;
 
             int actual = flight.Distance;
 
@@ -36,7 +36,7 @@ namespace FlightPlan.UnitTests
         [Fact]
         public void ComputeZeroDistance_WhenDepartureIsMissing()
         {
-            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49.9, 2.53);
             Flight flight = new Flight(Guid.NewGuid(), null, arrival, null);
 
             int expected = 0;
@@ -50,29 +50,29 @@ namespace FlightPlan.UnitTests
         public void ComputeTotalFuelConsumption_WhenPlaneIsPresent()
         {
             Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
-            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
-            Plane plane = new Plane(Guid.NewGuid(), "Model", 10, 200);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49.9, 2.53);
+            Plane plane = new Plane(Guid.NewGuid(), "Model", 200, 20);
             Flight flight = new Flight(Guid.NewGuid(), departure, arrival, plane);
 
-            double expected = 12;
+            int expected = 220;
 
-            double actual = flight.TotalFuelConsumption;
+            int actual = flight.TotalFuelConsumption;
 
-            Assert.Equal(expected, actual, 0);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void ComputeZeroFuelConsumption_WhenPlaneIsMissing()
         {
             Airport departure = new Airport(Guid.NewGuid(), "Departure", 49, 2.53);
-            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49, 2.55);
+            Airport arrival = new Airport(Guid.NewGuid(), "Arrival", 49.9, 2.53);
             Flight flight = new Flight(Guid.NewGuid(), departure, arrival, null);
 
-            double expected = 0;
+            int expected = 0;
 
-            double actual = flight.TotalFuelConsumption;
+            int actual = flight.TotalFuelConsumption;
 
-            Assert.Equal(expected, actual, 0);
+            Assert.Equal(expected, actual);
         }
     }
 }
