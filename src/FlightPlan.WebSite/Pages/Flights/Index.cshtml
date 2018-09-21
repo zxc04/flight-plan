@@ -1,0 +1,48 @@
+﻿@page
+@model FlightPlan.WebSite.Pages.Flights.IndexModel
+
+@{
+    ViewData["Title"] = "Flights";
+}
+
+<h2>Flights</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights[0].DepartureAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights[0].ArrivalAirport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights[0].Plane)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Flights) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureAirport.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalAirport.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plane.Model)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

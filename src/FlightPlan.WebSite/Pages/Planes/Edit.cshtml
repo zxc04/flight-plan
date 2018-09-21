@@ -1,0 +1,45 @@
+﻿@page
+@model FlightPlan.WebSite.Pages.Planes.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Plane</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Plane.Id" />
+            <div class="form-group">
+                <label asp-for="Plane.Model" class="control-label"></label>
+                <input asp-for="Plane.Model" class="form-control" />
+                <span asp-validation-for="Plane.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Plane.FuelConsumptionPer100Km" class="control-label"></label>
+                <input asp-for="Plane.FuelConsumptionPer100Km" class="form-control" />
+                <span asp-validation-for="Plane.FuelConsumptionPer100Km" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Plane.TakeoffFuelConsumption" class="control-label"></label>
+                <input asp-for="Plane.TakeoffFuelConsumption" class="form-control" />
+                <span asp-validation-for="Plane.TakeoffFuelConsumption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

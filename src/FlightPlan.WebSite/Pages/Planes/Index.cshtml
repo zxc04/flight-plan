@@ -1,0 +1,48 @@
+﻿@page
+@model FlightPlan.WebSite.Pages.Planes.IndexModel
+
+@{
+    ViewData["Title"] = "Planes";
+}
+
+<h2>Planes</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Planes[0].Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Planes[0].FuelConsumptionPer100Km)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Planes[0].TakeoffFuelConsumption)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Planes) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FuelConsumptionPer100Km)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TakeoffFuelConsumption)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
