@@ -13,8 +13,9 @@ namespace FlightPlan.Ioc
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(configuration.GetConnectionString("DatabaseContext")));
 
-            services.AddTransient<IPlaneRepository, PlaneRepository>();
             services.AddTransient<IAirportRepository, AirportRepository>();
+            services.AddTransient<IFlightRepository, FlightRepository>();
+            services.AddTransient<IPlaneRepository, PlaneRepository>();
         }
     }
 }

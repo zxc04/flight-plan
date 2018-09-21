@@ -1,5 +1,6 @@
 ﻿using GeoCoordinatePortable;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FlightPlan.Application.Domain
 {
@@ -7,8 +8,13 @@ namespace FlightPlan.Application.Domain
     {
         public Guid Id { get; set; }
 
+        [Display(Name = "Name")]
         public string Name { get; set; }
+
+        [Display(Name = "Latitude")]
         public double Latitude { get; set; }
+
+        [Display(Name = "Longitude")]
         public double Longitude { get; set; }
 
         public GeoCoordinate Coordinates => new GeoCoordinate(Latitude, Longitude);

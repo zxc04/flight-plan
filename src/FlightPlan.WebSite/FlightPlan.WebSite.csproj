@@ -15,4 +15,8 @@
     <ProjectReference Include="..\FlightPlan.Sql\FlightPlan.Sql.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

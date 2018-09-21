@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FlightPlan.Application.Domain;
+using FlightPlan.Application.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using FlightPlan.Sql.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace FlightPlan.WebSite.Pages.Flights
 {
     public class DetailsModel : PageModel
     {
-        private readonly FlightPlan.Sql.Entities.DatabaseContext _context;
+        private readonly IFlightRepository _repository;
 
-        public DetailsModel(FlightPlan.Sql.Entities.DatabaseContext context)
+        public DetailsModel(IFlightRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public Flight Flight { get; set; }
@@ -27,10 +25,7 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return NotFound();
             }
 
-            Flight = await _context.Flights
-                .Include(f => f.ArrivalAirport)
-                .Include(f => f.DepartureAirport)
-                .Include(f => f.Plane).FirstOrDefaultAsync(m => m.Id == id);
+            Flight = await _repository.Get(id);
 
             if (Flight == null)
             {

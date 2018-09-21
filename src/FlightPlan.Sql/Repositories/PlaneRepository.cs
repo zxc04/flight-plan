@@ -33,7 +33,7 @@ namespace FlightPlan.Sql.Repositories
             return FromEntity(entity);
         }
 
-        public async Task<Plane> CreateOrUpdate(Plane plane)
+        public async Task<Guid?> CreateOrUpdate(Plane plane)
         {
             if (plane.Id == null || plane.Id == Guid.Empty)
                 return await Create(plane);
@@ -51,7 +51,7 @@ namespace FlightPlan.Sql.Repositories
             }
         }
 
-        private async Task<Plane> Create(Plane plane)
+        private async Task<Guid?> Create(Plane plane)
         {
             Entities.Plane entity = ToEntity(plane);
             entity.Id = Guid.NewGuid();
@@ -59,12 +59,10 @@ namespace FlightPlan.Sql.Repositories
             _context.Add(entity);
             await _context.SaveChangesAsync();
 
-            plane = FromEntity(entity);
-
-            return plane;
+            return entity.Id;
         }
 
-        private async Task<Plane> Update(Plane plane)
+        private async Task<Guid?> Update(Plane plane)
         {
             Entities.Plane entity = ToEntity(plane);
 
@@ -74,7 +72,7 @@ namespace FlightPlan.Sql.Repositories
             {
                 await _context.SaveChangesAsync();
 
-                return plane;
+                return plane.Id;
             }
             catch (DbUpdateConcurrencyException)
             {

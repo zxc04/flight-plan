@@ -1,28 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FlightPlan.Application.Domain;
+using FlightPlan.Application.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using FlightPlan.Sql.Entities;
+using System.Threading.Tasks;
 
 namespace FlightPlan.WebSite.Pages.Flights
 {
     public class CreateModel : PageModel
     {
-        private readonly FlightPlan.Sql.Entities.DatabaseContext _context;
+        private readonly IFlightRepository _repository;
+        private readonly IAirportRepository _airportRepository;
+        private readonly IPlaneRepository _planeRepository;
 
-        public CreateModel(FlightPlan.Sql.Entities.DatabaseContext context)
+        public CreateModel(IFlightRepository repository, IAirportRepository airportRepository, IPlaneRepository planeRepository)
         {
-            _context = context;
+            _repository = repository;
+            _airportRepository = airportRepository;
+            _planeRepository = planeRepository;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-        ViewData["ArrivalAirportId"] = new SelectList(_context.Airports, "Id", "Name");
-        ViewData["DepartureAirportId"] = new SelectList(_context.Airports, "Id", "Name");
-        ViewData["PlaneId"] = new SelectList(_context.Planes, "Id", "Model");
+            var airports = await _airportRepository.GetAll();
+            var planes = await _planeRepository.GetAll();
+
+            ViewData["ArrivalAirportId"] = new SelectList(airports, "Id", "Name");
+            ViewData["DepartureAirportId"] = new SelectList(airports, "Id", "Name");
+            ViewData["PlaneId"] = new SelectList(planes, "Id", "Model");
+
             return Page();
         }
 
@@ -36,8 +42,7 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return Page();
             }
 
-            _context.Flights.Add(Flight);
-            await _context.SaveChangesAsync();
+            await _repository.CreateOrUpdate(Flight);
 
             return RedirectToPage("./Index");
         }

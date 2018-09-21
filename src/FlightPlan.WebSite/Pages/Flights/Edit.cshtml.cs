@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FlightPlan.Application.Domain;
+using FlightPlan.Application.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FlightPlan.Sql.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace FlightPlan.WebSite.Pages.Flights
 {
     public class EditModel : PageModel
     {
-        private readonly FlightPlan.Sql.Entities.DatabaseContext _context;
+        private readonly IFlightRepository _repository;
+        private readonly IAirportRepository _airportRepository;
+        private readonly IPlaneRepository _planeRepository;
 
-        public EditModel(FlightPlan.Sql.Entities.DatabaseContext context)
+        public EditModel(IFlightRepository repository, IAirportRepository airportRepository, IPlaneRepository planeRepository)
         {
-            _context = context;
+            _repository = repository;
+            _airportRepository = airportRepository;
+            _planeRepository = planeRepository;
         }
 
         [BindProperty]
@@ -29,18 +31,20 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return NotFound();
             }
 
-            Flight = await _context.Flights
-                .Include(f => f.ArrivalAirport)
-                .Include(f => f.DepartureAirport)
-                .Include(f => f.Plane).FirstOrDefaultAsync(m => m.Id == id);
+            Flight = await _repository.Get(id);
 
             if (Flight == null)
             {
                 return NotFound();
             }
-           ViewData["ArrivalAirportId"] = new SelectList(_context.Airports, "Id", "Id");
-           ViewData["DepartureAirportId"] = new SelectList(_context.Airports, "Id", "Id");
-           ViewData["PlaneId"] = new SelectList(_context.Planes, "Id", "Id");
+
+            var airports = await _airportRepository.GetAll();
+            var planes = await _planeRepository.GetAll();
+
+            ViewData["ArrivalAirportId"] = new SelectList(airports, "Id", "Name");
+            ViewData["DepartureAirportId"] = new SelectList(airports, "Id", "Name");
+            ViewData["PlaneId"] = new SelectList(planes, "Id", "Model");
+
             return Page();
         }
 
@@ -51,30 +55,12 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return Page();
             }
 
-            _context.Attach(Flight).State = EntityState.Modified;
+            var result = await _repository.CreateOrUpdate(Flight);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FlightExists(Flight.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (result == null)
+                return NotFound();
 
             return RedirectToPage("./Index");
-        }
-
-        private bool FlightExists(Guid id)
-        {
-            return _context.Flights.Any(e => e.Id == id);
         }
     }
 }

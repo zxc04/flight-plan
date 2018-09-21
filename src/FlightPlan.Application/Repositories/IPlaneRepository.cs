@@ -9,7 +9,7 @@ namespace FlightPlan.Application.Repositories
     {
         Task<List<Plane>> GetAll();
         Task<Plane> Get(Guid? id);
-        Task<Plane> CreateOrUpdate(Plane plane);
+        Task<Guid?> CreateOrUpdate(Plane plane);
         Task Delete(Guid? id);
     }
 }

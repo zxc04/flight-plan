@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FlightPlan.Application.Domain
 {
@@ -6,9 +7,13 @@ namespace FlightPlan.Application.Domain
     {
         public Guid Id { get; set; }
 
+        [Display(Name = "Departure")]
         public Airport DepartureAirport { get; set; }
+
+        [Display(Name = "Arrival")]
         public Airport ArrivalAirport { get; set; }
 
+        [Display(Name = "Plane")]
         public Plane Plane { get; set; }
 
         public Flight()

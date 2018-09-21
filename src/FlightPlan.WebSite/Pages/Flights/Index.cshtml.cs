@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using FlightPlan.Application.Domain;
+using FlightPlan.Application.Repositories;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using FlightPlan.Sql.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FlightPlan.WebSite.Pages.Flights
 {
     public class IndexModel : PageModel
     {
-        private readonly FlightPlan.Sql.Entities.DatabaseContext _context;
+        private readonly IFlightRepository _repository;
 
-        public IndexModel(FlightPlan.Sql.Entities.DatabaseContext context)
+        public IndexModel(IFlightRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
-        public IList<Flight> Flight { get;set; }
+        public IList<Flight> Flights { get; set; }
 
         public async Task OnGetAsync()
         {
-            Flight = await _context.Flights
-                .Include(f => f.ArrivalAirport)
-                .Include(f => f.DepartureAirport)
-                .Include(f => f.Plane).ToListAsync();
+            Flights = await _repository.GetAll();
         }
     }
 }

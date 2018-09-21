@@ -9,7 +9,7 @@ namespace FlightPlan.Application.Repositories
     {
         Task<List<Airport>> GetAll();
         Task<Airport> Get(Guid? id);
-        Task<Airport> CreateOrUpdate(Airport airport);
+        Task<Guid?> CreateOrUpdate(Airport airport);
         Task Delete(Guid? id);
     }
 }
