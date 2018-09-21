@@ -55,6 +55,10 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return Page();
             }
 
+            Flight.DepartureAirport = await _airportRepository.Get(Flight.DepartureAirport.Id);
+            Flight.ArrivalAirport = await _airportRepository.Get(Flight.ArrivalAirport.Id);
+            Flight.Plane = await _planeRepository.Get(Flight.Plane.Id);
+
             var result = await _repository.CreateOrUpdate(Flight);
 
             if (result == null)
