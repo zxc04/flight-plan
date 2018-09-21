@@ -46,8 +46,8 @@ namespace FlightPlan.WebSite.Pages.Planes
 
             if(result == null)
                 return NotFound();
-            
-            return RedirectToPage("./Index");
+
+            return RedirectToPage("./Details", new { id = result });
         }
     }
 }

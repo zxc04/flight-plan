@@ -30,9 +30,12 @@ namespace FlightPlan.WebSite.Pages.Planes
                 return Page();
             }
 
-            await _repository.CreateOrUpdate(Plane);
+            var result = await _repository.CreateOrUpdate(Plane);
 
-            return RedirectToPage("./Index");
+            if (result == null)
+                return RedirectToPage("./Index");
+
+            return RedirectToPage("./Details", new { id = result });
         }
     }
 }

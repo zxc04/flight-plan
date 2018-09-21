@@ -14,5 +14,8 @@ namespace FlightPlan.Sql.Entities
 
         public Guid? PlaneId { get; set; }
         public Plane Plane { get; set; }
+
+        public int Distance { get; set; }
+        public double TotalFuelConsumption { get; set; }
     }
 }

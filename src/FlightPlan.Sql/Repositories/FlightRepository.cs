@@ -118,7 +118,9 @@ namespace FlightPlan.Sql.Repositories
                 Id = flight.Id,
                 DepartureAirportId = flight.DepartureAirport.Id,
                 ArrivalAirportId = flight.ArrivalAirport.Id,
-                PlaneId = flight.Plane.Id
+                PlaneId = flight.Plane.Id,
+                Distance = flight.Distance,
+                TotalFuelConsumption = flight.TotalFuelConsumption
             };
         }
     }

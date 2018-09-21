@@ -42,9 +42,12 @@ namespace FlightPlan.WebSite.Pages.Flights
                 return Page();
             }
 
-            await _repository.CreateOrUpdate(Flight);
+            var result = await _repository.CreateOrUpdate(Flight);
 
-            return RedirectToPage("./Index");
+            if (result == null)
+                return RedirectToPage("./Index");
+
+            return RedirectToPage("./Details", new { id = result });
         }
     }
 }

@@ -16,6 +16,12 @@ namespace FlightPlan.Application.Domain
         [Display(Name = "Plane")]
         public Plane Plane { get; set; }
 
+        [Display(Name = "Distance (Km)")]
+        public int Distance => GetDistanceInKm();
+
+        [Display(Name = "Total fuel consumption (L)")]
+        public double TotalFuelConsumption => GetTotalFuelConsumption();
+
         public Flight()
         {
         }
@@ -28,7 +34,7 @@ namespace FlightPlan.Application.Domain
             Plane = plane;
         }
 
-        public int GetDistanceInKm()
+        private int GetDistanceInKm()
         {
             if (DepartureAirport?.Coordinates == null || ArrivalAirport?.Coordinates == null)
                 return 0;
@@ -36,7 +42,7 @@ namespace FlightPlan.Application.Domain
             return (int)(DepartureAirport.Coordinates.GetDistanceTo(ArrivalAirport.Coordinates) / 1000);
         }
 
-        public double GetTotalFuelConsumption()
+        private double GetTotalFuelConsumption()
         {
             if (Plane == null)
                 return 0;

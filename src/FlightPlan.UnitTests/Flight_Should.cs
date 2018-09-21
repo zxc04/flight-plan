@@ -15,7 +15,7 @@ namespace FlightPlan.UnitTests
 
             int expected = 1;
 
-            int actual = flight.GetDistanceInKm();
+            int actual = flight.Distance;
 
             Assert.Equal(expected, actual);
         }
@@ -28,7 +28,7 @@ namespace FlightPlan.UnitTests
 
             int expected = 0;
 
-            int actual = flight.GetDistanceInKm();
+            int actual = flight.Distance;
 
             Assert.Equal(expected, actual);
         }
@@ -41,7 +41,7 @@ namespace FlightPlan.UnitTests
 
             int expected = 0;
 
-            int actual = flight.GetDistanceInKm();
+            int actual = flight.Distance;
 
             Assert.Equal(expected, actual);
         }
@@ -56,7 +56,7 @@ namespace FlightPlan.UnitTests
 
             double expected = 12;
 
-            double actual = flight.GetTotalFuelConsumption();
+            double actual = flight.TotalFuelConsumption;
 
             Assert.Equal(expected, actual, 0);
         }
@@ -70,7 +70,7 @@ namespace FlightPlan.UnitTests
 
             double expected = 0;
 
-            double actual = flight.GetTotalFuelConsumption();
+            double actual = flight.TotalFuelConsumption;
 
             Assert.Equal(expected, actual, 0);
         }

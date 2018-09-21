@@ -30,9 +30,12 @@ namespace FlightPlan.WebSite.Pages.Airports
                 return Page();
             }
 
-            await _repository.CreateOrUpdate(Airport);
+            var result = await _repository.CreateOrUpdate(Airport);
 
-            return RedirectToPage("./Index");
+            if (result == null)
+                return RedirectToPage("./Index");
+
+            return RedirectToPage("./Details", new { id = result });
         }
     }
 }

@@ -60,7 +60,7 @@ namespace FlightPlan.WebSite.Pages.Flights
             if (result == null)
                 return NotFound();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = result });
         }
     }
 }
