@@ -8,19 +8,20 @@ namespace FlightPlan.Application.Domain
         public Guid Id { get; set; }
 
         [Display(Name = "Model")]
+        [MaxLength(100)]
         public string Model { get; set; }
 
         [Display(Name = "Fuel Consumption (L / 100Km)")]
-        public double FuelConsumptionPer100Km { get; set; }
+        public int FuelConsumptionPer100Km { get; set; }
 
         [Display(Name = "Takeoff Effort (L)")]
-        public double TakeoffFuelConsumption { get; set; }
+        public int TakeoffFuelConsumption { get; set; }
 
         public Plane()
         {
         }
 
-        public Plane(Guid id, string model, double fuelConsumptionPer100Km, double takeoffFuelConsumption)
+        public Plane(Guid id, string model, int fuelConsumptionPer100Km, int takeoffFuelConsumption)
         {
             Id = id;
             Model = model;
